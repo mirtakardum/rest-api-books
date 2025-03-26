@@ -1,4 +1,4 @@
-package com.mirta.services.impl;
+package com.mirta.books.services.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import com.mirta.books.domain.Book;
 import com.mirta.books.domain.BookEntity;
 import com.mirta.books.repositories.BookRepository;
-import com.mirta.services.BookService;
+import com.mirta.books.services.BookService;
 
 
 @Service

@@ -9,9 +9,12 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import static com.mirta.books.TestData.testBook;
+import static com.mirta.books.TestData.testBookEntity;
+
 import com.mirta.books.domain.Book;
 import com.mirta.books.repositories.BookRepository;
-import com.mirta.services.impl.BookServiceImpl;
+import com.mirta.books.services.impl.BookServiceImpl;
 import com.mirta.books.domain.BookEntity;
 
 
@@ -26,19 +29,8 @@ public class BookServiceImplTest {
 
     @Test
     public void testSavedBook() {
-        final Book book = Book.builder()
-            .isbn("09780198709718")
-            .author("Fyodor Dostoevsky")
-            .title("Crime and Punishment")
-            .genre("Novel")
-            .build();
-
-        final BookEntity bookEntity = BookEntity.builder()
-            .isbn("09780198709718")
-            .author("Fyodor Dostoevsky")
-            .title("Crime and Punishment")
-            .genre("Novel")
-            .build();
+        final Book book = testBook();
+        final BookEntity bookEntity = testBookEntity();
 
         when(bookRepository.save(eq(bookEntity))).thenReturn(bookEntity);
 
