@@ -17,6 +17,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mirta.books.TestData;
 import com.mirta.books.domain.Book;
+import com.mirta.books.services.BookService;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -25,6 +26,9 @@ public class BookControllerIT {
 
     @Autowired
     private MockMvc mockMvc;
+
+    @Autowired
+    private BookService bookService;
 
     @Test
     public void createdBookTest() throws Exception{
@@ -40,5 +44,24 @@ public class BookControllerIT {
         .andExpect(MockMvcResultMatchers.jsonPath("$.title").value(book.getTitle()))
         .andExpect(MockMvcResultMatchers.jsonPath("$.author").value(book.getAuthor()))
         .andExpect(MockMvcResultMatchers.jsonPath("$.genre").value(book.getGenre()));
-  }
+    }
+
+    @Test
+    public void testRetrievedBookReturns404WhenNotFound() throws Exception{
+
+      mockMvc.perform(MockMvcRequestBuilders.get("/books/123123123"))
+      .andExpect(MockMvcResultMatchers.status().isNotFound());
+    }
+
+    @Test
+    public void testRetrievedBookReturns200WhenExists() throws Exception{
+      final Book book = TestData.testBook();
+      bookService.create(book);
+      mockMvc.perform(MockMvcRequestBuilders.get("/books/" + book.getIsbn()))
+      .andExpect(MockMvcResultMatchers.status().isOk())
+      .andExpect(MockMvcResultMatchers.jsonPath("$.isbn").value(book.getIsbn()))
+      .andExpect(MockMvcResultMatchers.jsonPath("$.title").value(book.getTitle()))
+      .andExpect(MockMvcResultMatchers.jsonPath("$.author").value(book.getAuthor()))
+      .andExpect(MockMvcResultMatchers.jsonPath("$.genre").value(book.getGenre()));
+    }
 }
